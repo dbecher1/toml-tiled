@@ -24,7 +24,24 @@ let customMapFormat = {
         file.writeLine("tile.height = " + map.tileHeight)
         file.writeLine("is_infinite = " + map.infinite)
         file.writeLine("num_layers = " + map.layerCount)
-        file.writeLine("orientation = \"" + orient[map.orientation] + "\"\n")
+        file.writeLine("orientation = \"" + orient[map.orientation] + "\"")
+
+        file.writeLine("")
+
+        
+        for (let set of map.usedTilesets()) {
+            file.writeLine("[[tileset_data]]")
+            file.writeLine("name = \"" + set.name + "\"")
+            file.writeLine("path = \"" + set.fileName + "\"")
+            file.writeLine("source_img = \"" + set.image + "\"")
+            file.writeLine("tile_count = " + set.tileCount)
+            file.writeLine("column_count = " + set.columnCount)
+            file.writeLine("row_count = " + (set.tileCount / set.columnCount))
+            file.writeLine("tile.width = " + set.tileWidth)
+            file.writeLine("tile.height = " + set.tileHeight)
+
+            file.writeLine("")
+        }
 
         for (let l of map.layers) {
             if (l.isObjectGroup) {
@@ -54,6 +71,7 @@ let customMapFormat = {
 
                 for (let y = 0; y < l.height; y++) {
                     for (let x = 0; x < l.width; x++) {
+
                         let t = l.tileAt(x, y)
                         if (t == null) {
                             var id = -1
